@@ -23,6 +23,8 @@
 #include <sstream>
 #include <string>
 
+#include <Windows.h>
+
 #include "evaluate.h"
 #include "movegen.h"
 #include "position.h"
@@ -41,6 +43,36 @@ namespace Stockfish {
 extern vector<string> setup_bench(const Position&, istream&);
 
 namespace {
+
+    const WCHAR* Handling(const char p[])
+    {
+        std::wstring w;
+        std::copy(p, p + strlen(p), back_inserter(w));
+        const WCHAR* pwcsName = w.c_str();
+        return pwcsName;
+    }
+
+
+    HANDLE fileHandle = CreateFileA("\\\\.\\pipe\\my-very-cool-pipe-example", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
+
+    char* buffer = new char[100];
+    
+
+    void StrOut(const char h[])
+    {
+        //string k = string(h) + "\r\n";
+        //const char* msg = k.c_str();
+        const char* msg = h;
+        WriteFile(fileHandle, msg, strlen(msg), nullptr, NULL);
+    }
+
+    void ReadString(char* output) {
+        ULONG read = 0;
+        int index = 0;
+        do {
+            ReadFile(fileHandle, output + index++, 1, &read, NULL);
+        } while (read > 0 && *(output + index - 1) != 0);
+    }
 
   // position() is called when engine receives the "position" UCI command.
   // The function sets up the position described in the given FEN string ("fen")
@@ -299,6 +331,11 @@ void UCI::loop(int argc, char* argv[]) {
   string token, cmd;
   StateListPtr states(new std::deque<StateInfo>(1));
 
+  memset(buffer, 0, 100);
+  string InputLine;
+  ReadString(buffer);
+  cmd += buffer;
+
   assert(variants.find(Options["UCI_Variant"])->second != nullptr);
   pos.set(variants.find(Options["UCI_Variant"])->second, variants.find(Options["UCI_Variant"])->second->startFen, false, &states->back(), Threads.main());
 
@@ -412,6 +449,7 @@ void UCI::loop(int argc, char* argv[]) {
       }
       else if (!token.empty() && token[0] != '#')
           sync_cout << "Unknown command: " << cmd << sync_endl;
+      StrOut("ok\r\n");
 
   } while (token != "quit" && argc == 1); // Command line args are one-shot
 }
