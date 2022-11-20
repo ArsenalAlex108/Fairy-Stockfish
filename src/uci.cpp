@@ -356,7 +356,6 @@ namespace Stockfish {
         }
 
         do {
-
             ReadString(buffer);
             cmd += buffer;
             istringstream is(cmd);
@@ -446,6 +445,7 @@ namespace Stockfish {
                 sync_cout << "Unknown command: " << cmd << sync_endl;
             StrOut(pos.fen().c_str());
             StrOut("over\r\n");
+            cmd = "";
 
         } while (token != "quit" && argc == 1); // Command line args are one-shot
     }
