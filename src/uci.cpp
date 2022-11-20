@@ -333,8 +333,6 @@ void UCI::loop(int argc, char* argv[]) {
 
   memset(buffer, 0, 100);
   string InputLine;
-  ReadString(buffer);
-  cmd += buffer;
 
   assert(variants.find(Options["UCI_Variant"])->second != nullptr);
   pos.set(variants.find(Options["UCI_Variant"])->second, variants.find(Options["UCI_Variant"])->second->startFen, false, &states->back(), Threads.main());
@@ -361,9 +359,9 @@ void UCI::loop(int argc, char* argv[]) {
   }
 
   do {
-      if (argc == 1 && !getline(cin, cmd)) // Block here waiting for input or EOF
-          cmd = "quit";
-
+      
+        ReadString(buffer);
+        cmd += buffer;
       istringstream is(cmd);
 
       token.clear(); // Avoid a stale if getline() returns empty or blank line
