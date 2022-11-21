@@ -407,7 +407,11 @@ namespace Stockfish {
                 while (is >> token)
                     banmoves.push_back(UCI::to_move(pos, token));
             else if (token == "go")         go(pos, is, states, banmoves);
-            else if (token == "position")   position(pos, is, states), banmoves.clear();
+            else if (token == "position")
+            {
+                position(pos, is, states), banmoves.clear();
+                
+            }
             else if (token == "ucinewgame" || token == "usinewgame" || token == "uccinewgame") Search::clear();
             else if (token == "isready")    sync_cout << "readyok" << sync_endl;
 
@@ -443,8 +447,17 @@ namespace Stockfish {
             }
             else if (!token.empty() && token[0] != '#')
                 sync_cout << "Unknown command: " << cmd << sync_endl;
-            StrOut(pos.fen().c_str());
-            StrOut("over\r\n");
+            
+            if (cmd = "Checkers?")
+            {
+                for (Bitboard b = pos.checkers(); b; )
+                    StrOut(UCI::square(pos, pop_lsb(b)) + " ");
+            }
+            else
+                StrOut(pos.fen().c_str());
+
+            //Finish sending string
+            StrOut("\r\n");
             cmd = "";
 
         } while (token != "quit" && argc == 1); // Command line args are one-shot
