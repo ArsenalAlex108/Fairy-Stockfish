@@ -54,15 +54,6 @@ namespace Stockfish {
 
         char* buffer = new char[100];
 
-
-        void UCI::StrOut(const char h[])
-        {
-            //string k = string(h) + "\r\n";
-            //const char* msg = k.c_str();
-            const char* msg = h;
-            WriteFile(fileHandle, msg, strlen(msg), nullptr, NULL);
-        }
-
         void ReadString(char* output) {
             ULONG read = 0;
             int index = 0;
@@ -322,6 +313,14 @@ namespace Stockfish {
     /// run 'bench', once the command is executed the function returns immediately.
     /// In addition to the UCI ones, also some additional debug commands are supported.
 
+    void UCI::StrOut(const char h[])
+    {
+        //string k = string(h) + "\r\n";
+        //const char* msg = k.c_str();
+        const char* msg = h;
+        WriteFile(fileHandle, msg, strlen(msg), nullptr, NULL);
+    }
+
     void UCI::loop(int argc, char* argv[]) {
 
         Position pos;
@@ -457,7 +456,7 @@ namespace Stockfish {
                 if (token == "go")
                 {
                     
-                }
+                }   
             else
                 UCI::StrOut(pos.fen().c_str());
 
