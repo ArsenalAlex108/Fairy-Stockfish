@@ -448,10 +448,10 @@ namespace Stockfish {
             else if (!token.empty() && token[0] != '#')
                 sync_cout << "Unknown command: " << cmd << sync_endl;
             
-            if (cmd = "Checkers?")
+            if (cmd == "Checkers?")
             {
                 for (Bitboard b = pos.checkers(); b; )
-                    UCI::StrOut(UCI::square(pos, pop_lsb(b)) + " ");
+                    UCI::StrOut((UCI::square(pos, pop_lsb(b)) + " ").c_str());
             }
             else
                 if (token == "go")
