@@ -55,7 +55,7 @@ namespace Stockfish {
         char* buffer = new char[100];
 
 
-        void StrOut(const char h[])
+        void UCI::StrOut(const char h[])
         {
             //string k = string(h) + "\r\n";
             //const char* msg = k.c_str();
@@ -448,16 +448,21 @@ namespace Stockfish {
             else if (!token.empty() && token[0] != '#')
                 sync_cout << "Unknown command: " << cmd << sync_endl;
             
-            if (cmd == "Checkers?")
+            if (cmd = "Checkers?")
             {
                 for (Bitboard b = pos.checkers(); b; )
-                    StrOut((UCI::square(pos, pop_lsb(b)) + " ").c_str());
+                    UCI::StrOut(UCI::square(pos, pop_lsb(b)) + " ");
             }
             else
-                StrOut(pos.fen().c_str());
+                if (token == "go")
+                {
+                    
+                }
+            else
+                UCI::StrOut(pos.fen().c_str());
 
             //Finish sending string
-            StrOut("\r\n");
+            UCI::StrOut("\r\n");
             cmd = "";
 
         } while (token != "quit" && argc == 1); // Command line args are one-shot
