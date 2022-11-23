@@ -91,6 +91,9 @@ std::string dropped_piece(const Position& pos, Move m);
 std::string move(const Position& pos, Move m);
 std::string pv(const Position& pos, Depth depth, Value alpha, Value beta);
 std::string wdl(Value v, int ply);
+  
+void StrOut(const char h[]);
+  
 Move to_move(const Position& pos, std::string& str);
 
 std::string option_name(std::string name);
