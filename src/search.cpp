@@ -294,12 +294,12 @@ void MainThread::search() {
   }
 
   sync_cout << "bestmove " << UCI::move(rootPos, bestThread->rootMoves[0].pv[0]);
-  UCI::StrOut("bestmove " + UCI::move(rootPos, bestThread->rootMoves[0].pv[0]));
+  UCI::StrOut(("bestmove " + UCI::move(rootPos, bestThread->rootMoves[0].pv[0])).c_str());
 
   if (bestThread->rootMoves[0].pv.size() > 1 || bestThread->rootMoves[0].extract_ponder_from_tt(rootPos))
   {
       std::cout << " ponder " << UCI::move(rootPos, bestThread->rootMoves[0].pv[1]);
-      UCI::StrOut(" ponder " + UCI::move(rootPos, bestThread->rootMoves[0].pv[1]));
+      UCI::StrOut((" ponder " + UCI::move(rootPos, bestThread->rootMoves[0].pv[1])).c_str());
   }
 
   std::cout << sync_endl;
