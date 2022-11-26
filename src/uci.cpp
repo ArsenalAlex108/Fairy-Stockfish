@@ -33,6 +33,8 @@
 #include "xboard.h"
 #include "syzygy/tbprobe.h"
 
+#include "_namedpipes.h"
+
 using namespace std;
 
 namespace Stockfish {
@@ -335,7 +337,7 @@ namespace Stockfish {
         }
 
         do {
-            UCI::ReadString(buffer);
+            NamedPipes::ReadString(buffer);
             cmd += buffer;
             istringstream is(cmd);
 
@@ -430,7 +432,7 @@ namespace Stockfish {
             if (cmd == "Checkers?")
             {
                 for (Bitboard b = pos.checkers(); b; )
-                    UCI::StrOut((UCI::square(pos, pop_lsb(b)) + " ").c_str());
+                    NamedPipes::StrOut((UCI::square(pos, pop_lsb(b)) + " ").c_str());
             }
             else
                 if (token == "go")
@@ -438,10 +440,10 @@ namespace Stockfish {
                     
                 }   
             else
-                UCI::StrOut(pos.fen().c_str());
+                NamedPipes::StrOut(pos.fen().c_str());
 
             //Finish sending string
-            UCI::StrOut("\r\n");
+            NamedPipes::StrOut("\r\n");
             cmd = "";
 
         } while (token != "quit" && argc == 1); // Command line args are one-shot
