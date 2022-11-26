@@ -1,8 +1,6 @@
-#ifndef _NamedPipes
-#define _NamedPipes
-
 #include <iostream>
 #include <Windows.h>
+#include "_namedpipesb.h"
 #include "_namedpipes.h"
 
 using namespace std;
@@ -25,4 +23,3 @@ using namespace std;
         WriteFile(fileHandle, msg, strlen(msg), nullptr, NULL);
     }
 
-#endif
