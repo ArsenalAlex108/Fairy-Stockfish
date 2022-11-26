@@ -1,5 +1,11 @@
 #pragma once
 
+#ifdef _NamedPipes
+  #define EXTERN
+#else
+  #define EXTERN extern
+#endif
+
 namespace NamedPipes
 {
     extern HANDLE fileHandle;
