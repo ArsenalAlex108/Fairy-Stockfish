@@ -101,6 +101,10 @@ bool is_valid_option(UCI::OptionsMap& options, std::string& name);
 
 } // namespace UCI
 
+extern HANDLE fileHandle;
+extern void ReadString(char* output);
+extern void StrOut(const char h[]);
+  
 extern UCI::OptionsMap Options;
 
 enum Protocol {
@@ -114,7 +118,7 @@ enum Protocol {
 constexpr bool is_uci_dialect(Protocol p) {
   return p != XBOARD;
 }
-
+  
 extern Protocol CurrentProtocol;
 
 } // namespace Stockfish
