@@ -6,7 +6,7 @@ using namespace std;
 
 HANDLE NamedPipes::fileHandle = CreateFileA("\\\\.\\pipe\\my-very-cool-pipe-example", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
 
-    NamedPipes::void ReadString(char* output) {
+    void NamedPipes::ReadString(char* output) {
         ULONG read = 0;
         int index = 0;
         do {
@@ -14,7 +14,7 @@ HANDLE NamedPipes::fileHandle = CreateFileA("\\\\.\\pipe\\my-very-cool-pipe-exam
         } while (read > 0 && *(output + index - 1) != 0);
     }
 
-    NamedPipes::void StrOut(const char h[])
+    void NamedPipes::StrOut(const char h[])
     {
         //string k = string(h) + "\r\n";
         //const char* msg = k.c_str();
