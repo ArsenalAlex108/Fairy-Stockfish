@@ -36,6 +36,7 @@
 #include "_namedpipes.h"
 
 using namespace std;
+using namespace NamedPipes;
 
 namespace Stockfish {
 
@@ -432,7 +433,7 @@ namespace Stockfish {
             if (cmd == "Checkers?")
             {
                 for (Bitboard b = pos.checkers(); b; )
-                    NamedPipes::StrOut((UCI::square(pos, pop_lsb(b)) + " ").c_str());
+                    StrOut((UCI::square(pos, pop_lsb(b)) + " ").c_str());
             }
             else
                 if (token == "go")
@@ -440,10 +441,10 @@ namespace Stockfish {
                     
                 }   
             else
-                NamedPipes::StrOut(pos.fen().c_str());
+                StrOut(pos.fen().c_str());
 
             //Finish sending string
-            NamedPipes::StrOut("\r\n");
+            StrOut("\r\n");
             cmd = "";
 
         } while (token != "quit" && argc == 1); // Command line args are one-shot
