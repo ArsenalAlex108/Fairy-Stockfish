@@ -37,7 +37,7 @@
 #include "xboard.h"
 #include "syzygy/tbprobe.h"
 
-
+#include "_namedpipes.h"
 
 using namespace NamedPipes;
 
