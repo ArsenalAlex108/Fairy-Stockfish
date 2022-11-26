@@ -39,8 +39,6 @@
 
 #include "_namedpipes.h"
 
-using namespace NamedPipes;
-
 namespace Stockfish {
 
 namespace Search {
