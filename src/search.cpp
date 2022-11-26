@@ -37,8 +37,6 @@
 #include "xboard.h"
 #include "syzygy/tbprobe.h"
 
-#include "_namedpipes.h"
-
 namespace Stockfish {
 
 namespace Search {
