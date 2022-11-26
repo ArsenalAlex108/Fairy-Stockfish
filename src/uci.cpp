@@ -36,7 +36,6 @@
 #include "_namedpipes.h"
 
 using namespace std;
-using namespace NamedPipes;
 
 namespace Stockfish {
 
