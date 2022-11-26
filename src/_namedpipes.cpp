@@ -1,3 +1,6 @@
+#ifndef _NamedPipes
+#define _NamedPipes
+
 #include <iostream>
 #include <Windows.h>
 #include "_namedpipes.h"
@@ -25,3 +28,5 @@ namespace NamedPipes
         WriteFile(fileHandle, msg, strlen(msg), nullptr, NULL);
     }
 }
+
+#endif
