@@ -23,6 +23,8 @@
 #include <string>
 #include <vector>
 
+#include <Windows.h>
+
 #include "types.h"
 
 #include "variant.h"
