@@ -48,20 +48,7 @@ namespace Stockfish {
             const WCHAR* pwcsName = w.c_str();
             return pwcsName;
         }
-
-
-        HANDLE fileHandle = CreateFileA("\\\\.\\pipe\\my-very-cool-pipe-example", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
-
-        char* buffer = new char[100];
-
-        void ReadString(char* output) {
-            ULONG read = 0;
-            int index = 0;
-            do {
-                ReadFile(fileHandle, output + index++, 1, &read, NULL);
-            } while (read > 0 && *(output + index - 1) != 0);
-        }
-
+      
         // position() is called when engine receives the "position" UCI command.
         // The function sets up the position described in the given FEN string ("fen")
         // or the starting position ("startpos") and then makes the moves given in the
@@ -311,20 +298,13 @@ namespace Stockfish {
     /// function. Also intercepts EOF from stdin to ensure gracefully exiting if the
     /// GUI dies unexpectedly. When called with some command line arguments, e.g. to
     /// run 'bench', once the command is executed the function returns immediately.
-    /// In addition to the UCI ones, also some additional debug commands are supported.
-
-    void UCI::StrOut(const char h[])
-    {
-        //string k = string(h) + "\r\n";
-        //const char* msg = k.c_str();
-        const char* msg = h;
-        WriteFile(fileHandle, msg, strlen(msg), nullptr, NULL);
-    }
+    /// In addition to the UCI ones, also some additional debug commands are supported.    
 
     void UCI::loop(int argc, char* argv[]) {
 
         Position pos;
         string token, cmd;
+        char* buffer = new char[100];
         StateListPtr states(new std::deque<StateInfo>(1));
 
         memset(buffer, 0, 100);
@@ -355,7 +335,7 @@ namespace Stockfish {
         }
 
         do {
-            ReadString(buffer);
+            UCI::ReadString(buffer);
             cmd += buffer;
             istringstream is(cmd);
 
