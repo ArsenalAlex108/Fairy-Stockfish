@@ -6,7 +6,7 @@
   #define EXTERN extern
 #endif
 
-    extern HANDLE fileHandle;
-    extern void ReadString(char* output);
-    extern void StrOut(const char h[]);
+    EXTERN HANDLE fileHandle;
+    EXTERN void ReadString(char* output);
+    EXTERN void StrOut(const char h[]);
 
