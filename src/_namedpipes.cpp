@@ -4,9 +4,9 @@
 
 using namespace std;
 
-HANDLE fileHandle = CreateFileA("\\\\.\\pipe\\my-very-cool-pipe-example", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
+HANDLE NamedPipes::fileHandle = CreateFileA("\\\\.\\pipe\\my-very-cool-pipe-example", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
 
-    void ReadString(char* output) {
+    NamedPipes::void ReadString(char* output) {
         ULONG read = 0;
         int index = 0;
         do {
@@ -14,7 +14,7 @@ HANDLE fileHandle = CreateFileA("\\\\.\\pipe\\my-very-cool-pipe-example", GENERI
         } while (read > 0 && *(output + index - 1) != 0);
     }
 
-    void StrOut(const char h[])
+    NamedPipes::void StrOut(const char h[])
     {
         //string k = string(h) + "\r\n";
         //const char* msg = k.c_str();
