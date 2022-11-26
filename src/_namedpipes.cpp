@@ -6,10 +6,7 @@
 #include "_namedpipes.h"
 
 using namespace std;
-using namespace NamedPipes;
 
-namespace NamedPipes
-{
     HANDLE fileHandle = CreateFileA("\\\\.\\pipe\\my-very-cool-pipe-example", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
 
     void ReadString(char* output) {
@@ -27,6 +24,5 @@ namespace NamedPipes
         const char* msg = h;
         WriteFile(fileHandle, msg, strlen(msg), nullptr, NULL);
     }
-}
 
 #endif
