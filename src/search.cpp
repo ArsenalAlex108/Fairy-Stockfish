@@ -23,6 +23,8 @@
 #include <iostream>
 #include <sstream>
 
+#include <Windows.h>
+
 #include "evaluate.h"
 #include "misc.h"
 #include "movegen.h"
