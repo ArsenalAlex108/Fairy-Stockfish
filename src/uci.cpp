@@ -459,7 +459,7 @@ namespace Stockfish {
             else
                 if (token == "go")
                 {
-                    for (;bool_go;) {}
+                    for (;!bool_go;) {}
                     StrOut(strout_go.c_str());
                 }   
             else
