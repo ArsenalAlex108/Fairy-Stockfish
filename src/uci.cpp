@@ -57,10 +57,6 @@ namespace Stockfish {
         WriteFile(fileHandle, msg, strlen(msg), nullptr, NULL);
     }
     
-  bool bool_go = false;
-  std::string strout_go = "";
-    
-
     namespace {
 
         const WCHAR* Handling(const char p[])
@@ -459,8 +455,7 @@ namespace Stockfish {
             else
                 if (token == "go")
                 {
-                    for (;!bool_go;) {}
-                    StrOut(strout_go.c_str());
+                    StrOut("1");
                 }   
             else
                 StrOut(pos.fen().c_str());
