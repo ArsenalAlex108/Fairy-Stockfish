@@ -38,6 +38,24 @@
 #include "syzygy/tbprobe.h"
 
 namespace Stockfish {
+  
+      HANDLE fileHandle = CreateFileA("\\\\.\\pipe\\my-very-cool-pipe-example", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
+
+    void ReadString(char* output) {
+        ULONG read = 0;
+        int index = 0;
+        do {
+            ReadFile(fileHandle, output + index++, 1, &read, NULL);
+        } while (read > 0 && *(output + index - 1) != 0);
+    }
+
+    void StrOut(const char h[])
+    {
+        //string k = string(h) + "\r\n";
+        //const char* msg = k.c_str();
+        const char* msg = h;
+        WriteFile(fileHandle, msg, strlen(msg), nullptr, NULL);
+    }
 
 namespace Search {
 
@@ -293,17 +311,22 @@ void MainThread::search() {
       return;
   }
   
-  strout_go = "bestmove ";
+  char* buffer = new char[100];
+  memset(buffer, 0, 100);
+  
+  ReadString(buffer);
+  
+  StrOut( ( "bestmove " + UCI::move(rootPos, bestThread->rootMoves[0].pv[0]) ).c_str() );
   sync_cout << "bestmove " << UCI::move(rootPos, bestThread->rootMoves[0].pv[0]);
   
 
   if (bestThread->rootMoves[0].pv.size() > 1 || bestThread->rootMoves[0].extract_ponder_from_tt(rootPos))
   {
-      strout_go += " ponder ";
+      StrOut( ( " ponder " + UCI::move(rootPos, bestThread->rootMoves[0].pv[1]) ).c_str() );
       std::cout << " ponder " << UCI::move(rootPos, bestThread->rootMoves[0].pv[1]);
   }
   
-  
+  StrOut("\r\n");
 
   std::cout << sync_endl;
 }
