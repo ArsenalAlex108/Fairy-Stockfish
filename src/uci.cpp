@@ -113,8 +113,6 @@ namespace Stockfish {
             p.set(pos.variant(), pos.fen(), Options["UCI_Chess960"], &states->back(), Threads.main());
 
             Eval::NNUE::verify();
-
-            sync_cout << "\n" << Eval::trace(p) << sync_endl;
         }
 
 
@@ -143,8 +141,6 @@ namespace Stockfish {
             // Deal with option name aliases in UCI dialects
             else if (is_valid_option(Options, name))
                 Options[name] = value;
-            else
-                sync_cout << "No such option: " << name << sync_endl;
         }
 
 
@@ -391,10 +387,6 @@ namespace Stockfish {
                 Options["UCI_Variant"].set_default(defaultVariant);
                 std::istringstream ss("startpos");
                 position(pos, ss, states);
-                if (is_uci_dialect(CurrentProtocol))
-                    sync_cout << "id name " << engine_info(true)
-                    << "\n" << Options
-                    << "\n" << token << "ok" << sync_endl;
             }
 
             else if (CurrentProtocol == XBOARD)
@@ -412,15 +404,15 @@ namespace Stockfish {
                 
             }
             else if (token == "ucinewgame" || token == "usinewgame" || token == "uccinewgame") Search::clear();
-            else if (token == "isready")    sync_cout << "readyok" << sync_endl;
+            else if (token == "isready")    {}
 
             // Additional custom non-UCI commands, mainly for debugging.
             // Do not use these commands during a search!
             else if (token == "flip")     pos.flip();
             else if (token == "bench")    bench(pos, is, states);
-            else if (token == "d")        sync_cout << pos << sync_endl;
+            else if (token == "d")        {}
             else if (token == "eval")     trace_eval(pos);
-            else if (token == "compiler") sync_cout << compiler_info() << sync_endl;
+            else if (token == "compiler") {}
             else if (token == "export_net")
             {
                 std::optional<std::string> filename;
@@ -445,7 +437,7 @@ namespace Stockfish {
                 position(pos, is, states);
             }
             else if (!token.empty() && token[0] != '#')
-                sync_cout << "Unknown command: " << cmd << sync_endl;
+			{}
             
             if (cmd == "Checkers?")
             {
