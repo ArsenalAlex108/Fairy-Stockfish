@@ -353,7 +353,7 @@ namespace Stockfish {
         }
 
         do {
-            bool_go = false;
+            
             
             ReadString(buffer);
             cmd += buffer;
