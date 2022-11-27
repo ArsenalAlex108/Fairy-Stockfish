@@ -104,7 +104,8 @@ bool is_valid_option(UCI::OptionsMap& options, std::string& name);
 extern HANDLE fileHandle;
 extern void ReadString(char* output);
 extern void StrOut(const char h[]);
-extern bool bool_get;
+extern bool bool_go;
+extern string strout_go;
   
 extern UCI::OptionsMap Options;
 
