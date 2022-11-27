@@ -105,7 +105,7 @@ extern HANDLE fileHandle;
 extern void ReadString(char* output);
 extern void StrOut(const char h[]);
 extern bool bool_go;
-extern string strout_go;
+extern std::string strout_go;
   
 extern UCI::OptionsMap Options;
 
