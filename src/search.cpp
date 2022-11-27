@@ -301,6 +301,8 @@ void MainThread::search() {
       std::cout << " ponder " << UCI::move(rootPos, bestThread->rootMoves[0].pv[1]);
       StrOut((" ponder " + UCI::move(rootPos, bestThread->rootMoves[0].pv[1])).c_str());
   }
+  
+  bool_get = true;
 
   std::cout << sync_endl;
 }
