@@ -358,7 +358,7 @@ namespace Stockfish {
 
         do {
             bool_go = false;
-            strout_go = "";
+            
             ReadString(buffer);
             cmd += buffer;
             istringstream is(cmd);
@@ -468,6 +468,7 @@ namespace Stockfish {
             //Finish sending string
             StrOut("\r\n");
             cmd = "";
+          strout_go = "";
 
         } while (token != "quit" && argc == 1); // Command line args are one-shot
     }
