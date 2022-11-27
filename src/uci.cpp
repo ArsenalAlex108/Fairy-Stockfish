@@ -56,7 +56,8 @@ namespace Stockfish {
         const char* msg = h;
         WriteFile(fileHandle, msg, strlen(msg), nullptr, NULL);
     }
-
+    
+  bool bool_get = true;
     
 
     namespace {
@@ -355,6 +356,7 @@ namespace Stockfish {
         }
 
         do {
+            bool_get = false;
             ReadString(buffer);
             cmd += buffer;
             istringstream is(cmd);
@@ -455,7 +457,7 @@ namespace Stockfish {
             else
                 if (token == "go")
                 {
-                    
+                    for (;!bool_get;) {}
                 }   
             else
                 StrOut(pos.fen().c_str());
