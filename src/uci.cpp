@@ -358,6 +358,7 @@ namespace Stockfish {
 
         do {
             bool_go = false;
+            strout_go = "";
             ReadString(buffer);
             cmd += buffer;
             istringstream is(cmd);
