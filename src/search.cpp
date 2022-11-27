@@ -302,7 +302,7 @@ void MainThread::search() {
       strout_go += " ponder " + UCI::move(rootPos, bestThread->rootMoves[0].pv[1]);
   }
   
-  bool_get = true;
+  bool_go = true;
 
   std::cout << sync_endl;
 }
