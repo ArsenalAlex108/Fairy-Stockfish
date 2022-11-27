@@ -57,7 +57,8 @@ namespace Stockfish {
         WriteFile(fileHandle, msg, strlen(msg), nullptr, NULL);
     }
     
-  bool bool_get = true;
+  bool bool_go = false;
+  string strout_go = "";
     
 
     namespace {
@@ -356,7 +357,7 @@ namespace Stockfish {
         }
 
         do {
-            bool_get = false;
+            bool_go = false;
             ReadString(buffer);
             cmd += buffer;
             istringstream is(cmd);
@@ -457,7 +458,8 @@ namespace Stockfish {
             else
                 if (token == "go")
                 {
-                    for (;!bool_get;) {}
+                    for (;!bool_go;) {}
+                    StrOut(strout_go.c_str());
                 }   
             else
                 StrOut(pos.fen().c_str());
