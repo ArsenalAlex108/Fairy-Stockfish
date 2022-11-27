@@ -58,7 +58,7 @@ namespace Stockfish {
     }
     
   bool bool_go = false;
-  string strout_go = "";
+  std::string strout_go = "";
     
 
     namespace {
