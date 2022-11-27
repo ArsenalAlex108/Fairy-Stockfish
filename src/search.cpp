@@ -292,14 +292,15 @@ void MainThread::search() {
       }
       return;
   }
-
-  sync_cout << "bestmove " << UCI::move(rootPos, bestThread->rootMoves[0].pv[0]);
+  
   strout_go = "bestmove " + UCI::move(rootPos, bestThread->rootMoves[0].pv[0]);
+  sync_cout << "bestmove " << UCI::move(rootPos, bestThread->rootMoves[0].pv[0]);
+  
 
   if (bestThread->rootMoves[0].pv.size() > 1 || bestThread->rootMoves[0].extract_ponder_from_tt(rootPos))
   {
-      std::cout << " ponder " << UCI::move(rootPos, bestThread->rootMoves[0].pv[1]);
       strout_go += " ponder " + UCI::move(rootPos, bestThread->rootMoves[0].pv[1]);
+      std::cout << " ponder " << UCI::move(rootPos, bestThread->rootMoves[0].pv[1]);
   }
   
   bool_go = true;
