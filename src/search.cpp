@@ -293,13 +293,13 @@ void MainThread::search() {
       return;
   }
   
-  strout_go = "bestmove " + UCI::move(rootPos, bestThread->rootMoves[0].pv[0]);
+  strout_go = "bestmove ";
   sync_cout << "bestmove " << UCI::move(rootPos, bestThread->rootMoves[0].pv[0]);
   
 
   if (bestThread->rootMoves[0].pv.size() > 1 || bestThread->rootMoves[0].extract_ponder_from_tt(rootPos))
   {
-      strout_go += " ponder " + UCI::move(rootPos, bestThread->rootMoves[0].pv[1]);
+      strout_go += " ponder ";
       std::cout << " ponder " << UCI::move(rootPos, bestThread->rootMoves[0].pv[1]);
   }
   
