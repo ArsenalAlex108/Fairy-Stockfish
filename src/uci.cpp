@@ -461,6 +461,7 @@ namespace Stockfish {
                 {
                     for (;!bool_go;) {}
                     StrOut(strout_go.c_str());
+                    StrOut("a");
                 }   
             else
                 StrOut(pos.fen().c_str());
