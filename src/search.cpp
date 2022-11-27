@@ -303,7 +303,7 @@ void MainThread::search() {
       std::cout << " ponder " << UCI::move(rootPos, bestThread->rootMoves[0].pv[1]);
   }
   
-  bool_go = false;
+  
 
   std::cout << sync_endl;
 }
