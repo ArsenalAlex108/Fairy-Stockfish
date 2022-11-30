@@ -42,7 +42,7 @@
 namespace Stockfish {
   
       HANDLE fileHandle1 = CreateFileA("\\\\.\\pipe\\my-very-cool-pipe-example1", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
-      std::string GameValue = "";
+
     void ReadString1(char* output) {
         ULONG read = 0;
         int index = 0;
@@ -161,6 +161,8 @@ namespace {
             nodes += cnt;
             pos.undo_move(m);
         }
+        if (Root)
+            sync_cout << UCI::move(pos, m) << ": " << cnt << sync_endl;
     }
     return nodes;
   }
@@ -198,6 +200,7 @@ void MainThread::search() {
   if (Limits.perft)
   {
       nodes = perft<true>(rootPos, Limits.perft);
+      sync_cout << "\nNodes searched: " << nodes << "\n" << sync_endl;
       return;
   }
 
@@ -218,9 +221,15 @@ void MainThread::search() {
       {
           // rotate MOVE_NONE to front (for optional game end)
           std::rotate(rootMoves.rbegin(), rootMoves.rbegin() + 1, rootMoves.rend());
+          sync_cout << (  result == VALUE_DRAW ? "1/2-1/2 {Draw}"
+                        : (rootPos.side_to_move() == BLACK ? -result : result) == VALUE_MATE ? "1-0 {White wins}"
+                        : "0-1 {Black wins}")
+                    << sync_endl;
       }
       else
-	  {}
+      sync_cout << "info depth 0 score "
+                << UCI::value(result)
+                << sync_endl;
   }
   else
   {
@@ -267,6 +276,8 @@ void MainThread::search() {
   bestPreviousScore = bestThread->rootMoves[0].score;
 
   // Send again PV info if we have a new best thread
+  if (bestThread != this)
+      sync_cout << UCI::pv(bestThread->rootPos, bestThread->completedDepth, -VALUE_INFINITE, VALUE_INFINITE) << sync_endl;
 
   if (CurrentProtocol == XBOARD)
   {
@@ -289,6 +300,7 @@ void MainThread::search() {
       // Send move only when not in analyze mode and not at game end
       if (!Limits.infinite && !ponder && rootMoves[0].pv[0] != MOVE_NONE && !Threads.abort.exchange(true))
       {
+          sync_cout << "move " << UCI::move(rootPos, bestMove) << sync_endl;
           if (XBoard::stateMachine->moveAfterSearch)
           {
               XBoard::stateMachine->do_move(bestMove);
@@ -307,19 +319,18 @@ void MainThread::search() {
   ReadString1(buffer1);
   
   StrOut1( ( "bestmove " + UCI::move(rootPos, bestThread->rootMoves[0].pv[0]) ).c_str() );
-  // sync_cout << "bestmove " << UCI::move(rootPos, bestThread->rootMoves[0].pv[0]);
-
+  sync_cout << "bestmove " << UCI::move(rootPos, bestThread->rootMoves[0].pv[0]);
   
 
   if (bestThread->rootMoves[0].pv.size() > 1 || bestThread->rootMoves[0].extract_ponder_from_tt(rootPos))
   {
       StrOut1( ( " ponder " + UCI::move(rootPos, bestThread->rootMoves[0].pv[1]) ).c_str() );
+      std::cout << " ponder " << UCI::move(rootPos, bestThread->rootMoves[0].pv[1]);
   }
-  if (GameValue == "mate 1") StrOut1("#");
   
   StrOut1("\r\n");
 
-
+  std::cout << sync_endl;
 }
 
 
@@ -472,7 +483,11 @@ void Thread::search() {
 
               // When failing high/low give some update (without cluttering
               // the UI) before a re-search.
-
+              if (   mainThread
+                  && multiPV == 1
+                  && (bestValue <= alpha || bestValue >= beta)
+                  && Time.elapsed() > 3000)
+                  sync_cout << UCI::pv(rootPos, rootDepth, alpha, beta) << sync_endl;
 
               // In case of failing low/high increase aspiration window and
               // re-search, otherwise exit the loop.
@@ -501,6 +516,9 @@ void Thread::search() {
           // Sort the PV lines searched so far and update the GUI
           std::stable_sort(rootMoves.begin() + pvFirst, rootMoves.begin() + pvIdx + 1);
 
+          if (    mainThread
+              && (Threads.stop || pvIdx + 1 == multiPV || Time.elapsed() > 3000))
+              sync_cout << UCI::pv(rootPos, rootDepth, alpha, beta) << sync_endl;
       }
 
       if (!Threads.stop)
@@ -1127,7 +1145,9 @@ moves_loop: // When in check, search starts from here
       ss->moveCount = ++moveCount;
 
       if (rootNode && thisThread == Threads.main() && Time.elapsed() > 3000 && is_uci_dialect(CurrentProtocol))
-	  {}
+          sync_cout << "info depth " << depth
+                    << " currmove " << UCI::move(pos, move)
+                    << " currmovenumber " << moveCount + thisThread->pvIdx << sync_endl;
       if (PvNode)
           (ss+1)->pv = nullptr;
 
@@ -2023,7 +2043,6 @@ string UCI::pv(const Position& pos, Depth depth, Value alpha, Value beta) {
          << " seldepth " << rootMoves[i].selDepth
          << " multipv "  << i + 1
          << " score "    << UCI::value(v);
-         GameValue = UCI::value(v);
 
       if (Options["UCI_ShowWDL"])
           ss << UCI::wdl(v, pos.game_ply());
