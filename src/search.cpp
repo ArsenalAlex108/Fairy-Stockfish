@@ -314,7 +314,7 @@ void MainThread::search() {
   {
       StrOut1( ( " ponder " + UCI::move(rootPos, bestThread->rootMoves[0].pv[1]) ).c_str() );
   }
-  else if (GameValue == "mate 1") StrOut1("#");
+  if (GameValue == "mate 1") StrOut1("#");
   
   StrOut1("\r\n");
 
