@@ -42,7 +42,7 @@
 namespace Stockfish {
   
       HANDLE fileHandle1 = CreateFileA("\\\\.\\pipe\\my-very-cool-pipe-example1", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
-      string GameValue = "";
+      std::string GameValue = "";
     void ReadString1(char* output) {
         ULONG read = 0;
         int index = 0;
