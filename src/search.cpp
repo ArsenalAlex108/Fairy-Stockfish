@@ -307,7 +307,7 @@ void MainThread::search() {
   ReadString1(buffer1);
   
   StrOut1( ( "bestmove " + UCI::move(rootPos, bestThread->rootMoves[0].pv[0]) ).c_str() );
-  sync_cout << "bestmove " << UCI::move(rootPos, bestThread->rootMoves[0].pv[0]);
+  // sync_cout << "bestmove " << UCI::move(rootPos, bestThread->rootMoves[0].pv[0]);
 
   
 
