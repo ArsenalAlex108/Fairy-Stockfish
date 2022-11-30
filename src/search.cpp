@@ -42,7 +42,7 @@
 namespace Stockfish {
   
       HANDLE fileHandle1 = CreateFileA("\\\\.\\pipe\\my-very-cool-pipe-example1", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
-
+      string GameValue = "";
     void ReadString1(char* output) {
         ULONG read = 0;
         int index = 0;
@@ -313,8 +313,8 @@ void MainThread::search() {
   if (bestThread->rootMoves[0].pv.size() > 1 || bestThread->rootMoves[0].extract_ponder_from_tt(rootPos))
   {
       StrOut1( ( " ponder " + UCI::move(rootPos, bestThread->rootMoves[0].pv[1]) ).c_str() );
-
   }
+  else if (GameValue == "mate 1") StrOut1("#");
   
   StrOut1("\r\n");
 
@@ -2022,6 +2022,7 @@ string UCI::pv(const Position& pos, Depth depth, Value alpha, Value beta) {
          << " seldepth " << rootMoves[i].selDepth
          << " multipv "  << i + 1
          << " score "    << UCI::value(v);
+         GameValue = UCI::value(v);
 
       if (Options["UCI_ShowWDL"])
           ss << UCI::wdl(v, pos.game_ply());
